@@ -59,7 +59,7 @@ void print_csv(double **csv, int len_lines, int len_column) {
     int i = 0;
     if (len_column == 1) {
         for (i = 0; i < len_lines; i++) {
-            printf("%f |", csv[i]);
+            printf("%d| %f |",i, csv[i]);
             printf("\n");
         }
     }else{
