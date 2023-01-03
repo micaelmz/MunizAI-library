@@ -20,7 +20,7 @@ int main() {
     RESULT_COLUMN = -1;
 
     // Carrega o dataset
-    double **csv = read_csv("diabetes.csv", &len_lines, &len_column);
+    double **csv = read_csv("dataset-examples/diabetes.csv", &len_lines, &len_column);
 
     // Embaralha o dataset (opcional, recomendo NÃO USAR neste exemplo)
     //shuffle(dataset, len_lines, len_column);
