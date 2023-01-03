@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <windows.h>
+#include "pandas.c"
 
 #define EULER 2.71828
 
@@ -20,24 +20,6 @@ float weighted_mean(float *n, float *w, int size) {
         }
     }
     return sum / w_sum;
-}
-
-//int rand_int(int min, int max) {
-//    unsigned long long x;
-//    asm volatile("rdtsc" : "=A" (x));
-//    const unsigned long long a = 1103515245;
-//    const unsigned long long c = 12345;
-//    const unsigned long long m = 1ull << 31;
-//    x = (a * x + c) % m;
-//    return min + (int)(x / (m / (max - min + 1)));
-//}
-
-int rand_int(int min, int max) {
-    srand(clock());
-    LARGE_INTEGER performance_counter;
-    QueryPerformanceCounter(&performance_counter);
-    srand((unsigned int)performance_counter.QuadPart);
-    return rand() % (max - min + 1) + min;
 }
 
 
@@ -166,7 +148,7 @@ void fit(Perceptron *perceptron, float alpha, int epochs, int *result, int batch
         float mean_error = weighted_mean(batch_errors, NULL, batch_size);
 
         // AVISO - remover esse print para obter uma melhor performance, tipo 20x mais rápido
-        printf("\rEpoch: %d - erro (distancia do resultado esperado): %.4f - media: %.4f", epoch, mean_error, (float)hits / (float)steps);
+        printf("\rEpoch: %d - distancia do resultado: %.4f - media: %.4f", epoch, mean_error, (float)hits / (float)steps);
     }
     //printf("Acuracia: %.2f%%\n", (float)hits / (float)steps * 100);
     printf("\nPesos finais: \n");

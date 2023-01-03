@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <windows.h>
+#include <time.h>
 
 #define MAX_LINE 9999
 
@@ -54,6 +56,14 @@ double **read_csv(const char *filename, int *len_lines, int *len_column) {
     return matrix;
 }
 
+int rand_int(int min, int max) {
+    srand(clock());
+    LARGE_INTEGER performance_counter;
+    QueryPerformanceCounter(&performance_counter);
+    srand((unsigned int)performance_counter.QuadPart);
+    return rand() % (max - min + 1) + min;
+}
+
 
 void print_csv(double **csv, int len_lines, int len_column) {
     int i = 0;
@@ -73,16 +83,44 @@ void print_csv(double **csv, int len_lines, int len_column) {
     }
 }
 
+void shuffle(double **matrix, int N, int M) {
+    int *indices = malloc(N * sizeof(int));
+    for (int i = 0; i < N; i++) {
+        indices[i] = i;
+    }
+
+    srand(time(NULL)); // inicializa o gerador de números aleatórios
+    for (int i = N - 1; i > 0; i--) {
+        int j = rand() % (i + 1); // gera um índice aleatório entre 0 e i
+        int temp = indices[i];
+        indices[i] = indices[j];
+        indices[j] = temp;
+    }
+
+    // Percorre o vetor de índices embaralhados e embaralha a matriz diretamente no ponteiro
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < M; j++) {
+            double temp = matrix[i][j];
+            matrix[i][j] = matrix[indices[i]][j];
+            matrix[indices[i]][j] = temp;
+        }
+    }
+
+    free(indices);
+}
 
 double **remove_column(double **csv, int *len_lines, int *len_column, int column) {
     if (column >= *len_column) {
         printf("Error: column %d is out of range\n", column);
         exit(1);
     }
+
     if (column < 0){
         column = *len_column - column;
     }
+
     double **new_csv = malloc(*len_lines * sizeof(double *));
+
     for (int i = 0; i < *len_lines; i++) {
         new_csv[i] = malloc((*len_column - 1) * sizeof(double));
         int j = 0;
@@ -92,6 +130,7 @@ double **remove_column(double **csv, int *len_lines, int *len_column, int column
             }
         }
     }
+
     *len_column -= 1;
     printf("len_lines: %d, len_column: %d\n", *len_lines, *len_column);
     return new_csv;

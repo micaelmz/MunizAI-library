@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include "pandas.c"
 #include "ai.c"
 
 #define COLUNA_RESULTADO -1
@@ -14,6 +13,12 @@ int main() {
 
     // le o arquivo csv e armazena em uma matriz
     double **csv = read_csv("test.csv", &len_lines, &len_column);
+
+    // remove primeira e segunda coluna (id e fuso horario)
+    //remove_column(csv, &len_lines, &len_column,0);
+    //remove_column(csv, &len_lines, &len_column,0);
+
+    //shuffle(csv, len_lines, len_column);
 
     // divide o dataset em treino e teste
     double **train_data = malloc(len_lines * sizeof(double*));
@@ -39,7 +44,6 @@ int main() {
 
     int copy_len_column = len_column;
     int copy_len_test = len_test;
-
     // inicializa o perceptron
     fit(&p, 0.1, 1000, train_result, 16, train_data, len_column, len_train);
 
