@@ -182,3 +182,9 @@ void predict(Perceptron *p, double **dataset, float *result, int size, int rows)
     printf("\n\tPredicao com a amostra de testes:");
     printf("\n\tAcertos: %d - Erros: %d - Acuracia: %.2f%%\n", hits, wrong, (float)hits / (float)(hits + wrong) * 100);
 }
+
+// TODO - ALGORITMOS DE OVERLIFITING - AINDA NÃO IMPLEMENTADOS
+
+// TODO - ALGORTIMOS DE OTIMIZAÇÃO COMO GRADIENTE DESCENDENTE E ADAM - AINDA NÃO IMPLEMENTADOS
+
+// TODO - RANDOM UTILIZANDO RUIDOS DO SISTEMA - AINDA NÃO IMPLEMENTADOS
