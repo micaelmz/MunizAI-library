@@ -1,7 +1,9 @@
 #include <stdio.h>
-#include "ai.c"
+#include <stdlib.h>
+#include "pandas.c"
+#include "neural_network.c"
 
-#define COLUNA_RESULTADO -1
+#define COLUNA_RESULTADO 0
 
 int main() {
     // variaveis que armazenam as dimensoes do arquivo csv
@@ -12,7 +14,7 @@ int main() {
     int len_test = 0;
 
     // le o arquivo csv e armazena em uma matriz
-    double **csv = read_csv("test.csv", &len_lines, &len_column);
+    double **csv = read_csv("data.csv", &len_lines, &len_column);
 
     // remove primeira e segunda coluna (id e fuso horario)
     //remove_column(csv, &len_lines, &len_column,0);
@@ -45,9 +47,9 @@ int main() {
     int copy_len_column = len_column;
     int copy_len_test = len_test;
     // inicializa o perceptron
-    fit(&p, 0.1, 1000, train_result, 16, train_data, len_column, len_train);
+    fit(&p, 0.1, 1000, 16, train_data, train_result, len_column, len_train);
 
-    predict(&p, test_data, copy_len_column, test_result, copy_len_test);
+    predict(&p, test_data, test_result, copy_len_column, copy_len_test);
     printf("\n");
     system("pause");
     return 0;

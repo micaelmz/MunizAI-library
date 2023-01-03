@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <windows.h>
 #include <time.h>
+
 
 #define MAX_LINE 9999
 
@@ -54,14 +54,6 @@ double **read_csv(const char *filename, int *len_lines, int *len_column) {
     fclose(fp);
     printf("len_lines: %d, len_column: %d\n", *len_lines, *len_column);
     return matrix;
-}
-
-int rand_int(int min, int max) {
-    srand(clock());
-    LARGE_INTEGER performance_counter;
-    QueryPerformanceCounter(&performance_counter);
-    srand((unsigned int)performance_counter.QuadPart);
-    return rand() % (max - min + 1) + min;
 }
 
 
