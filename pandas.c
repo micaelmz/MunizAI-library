@@ -3,9 +3,10 @@
 #include <string.h>
 #include <time.h>
 
-
 #define MAX_LINE 9999
 
+// Lê um arquivo .csv e retorna uma matriz com os dados float..
+// Entradas: filename = nome do arquivo .csv, len_lines = ponteiro para a variavel que armazenará o numero de linhas do arquivo, len_column = ponteiro para a variavel que armazenará o numero de colunas do arquivo.
 double **read_csv(const char *filename, int *len_lines, int *len_column) {
     FILE *fp = fopen(filename, "r");
     if (fp == NULL) {
@@ -56,7 +57,8 @@ double **read_csv(const char *filename, int *len_lines, int *len_column) {
     return matrix;
 }
 
-
+// Imprime a matriz do csv em um formato semelhante ao pandas
+// Entradas: csv = matriz com os dados do arquivo csv, len_lines = numero de linhas da matriz, len_column = numero de colunas da matriz
 void print_csv(double **csv, int len_lines, int len_column) {
     int i = 0;
     if (len_column == 1) {
@@ -75,32 +77,36 @@ void print_csv(double **csv, int len_lines, int len_column) {
     }
 }
 
-void shuffle(double **matrix, int N, int M) {
-    int *indices = malloc(N * sizeof(int));
-    for (int i = 0; i < N; i++) {
-        indices[i] = i;
+// Embaralha as linhas da matriz do csv
+// Entradas: csv = matriz com os dados do arquivo csv, len_lines = numero de linhas da matriz, len_column = numero de colunas da matriz
+void shuffle(double **matrix, int len_lines, int len_column) {
+    int *index = malloc(len_lines * sizeof(int));
+    for (int i = 0; i < len_lines; i++) {
+        index[i] = i;
     }
 
-    srand(time(NULL)); // inicializa o gerador de números aleatórios
-    for (int i = N - 1; i > 0; i--) {
-        int j = rand() % (i + 1); // gera um índice aleatório entre 0 e i
-        int temp = indices[i];
-        indices[i] = indices[j];
-        indices[j] = temp;
+    srand(time(NULL));
+    for (int i = len_lines - 1; i > 0; i--) {
+        int j = rand() % (i + 1);
+        int temp = index[i];
+        index[i] = index[j];
+        index[j] = temp;
     }
 
     // Percorre o vetor de índices embaralhados e embaralha a matriz diretamente no ponteiro
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < M; j++) {
+    for (int i = 0; i < len_lines; i++) {
+        for (int j = 0; j < len_column; j++) {
             double temp = matrix[i][j];
-            matrix[i][j] = matrix[indices[i]][j];
-            matrix[indices[i]][j] = temp;
+            matrix[i][j] = matrix[index[i]][j];
+            matrix[index[i]][j] = temp;
         }
     }
 
-    free(indices);
+    free(index);
 }
 
+// Remove uma coluna da matriz do csv
+// Entradas csv = matriz com os dados do arquivo csv, len_lines = numero de linhas da matriz, len_column = numero de colunas da matriz, column = coluna a ser removida
 double **remove_column(double **csv, int *len_lines, int *len_column, int column) {
     if (column >= *len_column) {
         printf("Error: column %d is out of range\n", column);
@@ -128,6 +134,8 @@ double **remove_column(double **csv, int *len_lines, int *len_column, int column
     return new_csv;
 }
 
+// Copia uma coluna da matriz do csv
+// Entradas csv = matriz com os dados do arquivo csv, len_lines = numero de linhas da matriz, len_column = numero de colunas da matriz, column = coluna a ser copiada
 double *copy_column(double **csv, int len_lines, int len_column, int column) {
     if (column >= len_column) {
         printf("Error: column %d is out of range\n", column);
