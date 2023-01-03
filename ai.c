@@ -110,6 +110,7 @@ void predict(Perceptron *p, double **dataset, int size, float *result, int rows)
             wrong++;
         }
     }
+    printf("\n\tPredicao com a amostra de testes:");
     printf("\n\tAcertos: %d - Erros: %d - Acuracia: %.2f%%\n", hits, wrong, (float)hits / (float)(hits + wrong) * 100);
 }
 
@@ -130,6 +131,8 @@ void fit(Perceptron *perceptron, float alpha, int epochs, int *result, int batch
 
     perceptron->relu_neurons = malloc(relu_neurons_units * sizeof(float));
     perceptron->alpha = alpha;
+
+    int carregar = epochs / 100;
 
     for (int epoch = 0; epoch < epochs; epoch++) {
         double batch_errors[batch_size];
@@ -161,15 +164,18 @@ void fit(Perceptron *perceptron, float alpha, int epochs, int *result, int batch
             batch_errors[i] = error;
         }
         float mean_error = weighted_mean(batch_errors, NULL, batch_size);
-        printf("Epoch: %d - erro: %.4f - media: %.2f%%", epoch, mean_error, (float)hits / (float)steps * 100);
-        printf("\n");
+
+        // AVISO - remover esse print para obter uma melhor performance, tipo 20x mais rápido
+        printf("\rEpoch: %d - erro (distancia do resultado esperado): %.4f - media: %.4f", epoch, mean_error, (float)hits / (float)steps);
     }
     //printf("Acuracia: %.2f%%\n", (float)hits / (float)steps * 100);
-    printf("Pesos finais: ");
+    printf("\nPesos finais: \n");
     for (int i = 0; i < relu_neurons_units; i++) {
         printf("[%i: %.4f ]", i, perceptron->weights[i]);
         printf("\n");
     }
     printf("\n\n\n\tO treinamento terminou. Esses sao os resultados:");
     printf("\n\tTempo de execucao: %d segundos", (int)(time(NULL) - start_time));
+    printf("\n\tEpochs: %d - Batch_size: %d - Alpha: %f", epochs, batch_size, alpha);
+    printf("\n\t\t Neuronios ReLU: %d + 1 Neuronio Sigmoid", relu_neurons_units);
 }
