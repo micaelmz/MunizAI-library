@@ -54,6 +54,8 @@ Final weights:
 <i>You can find this example in main.c</i>
 
 ### ToolKit.c
+The ToolKit module contains a set of utility functions that are commonly used in the development of neural networks. These functions include activation functions such as the sigmoid function (i.e. $$ \sigmoid(x) = \frac{1}{1 + e^{-x}} $$), mathematical constants, the backpropagation function (i.e. $$ \Delta w = \alpha \times (expected - obtained) \times input $$), random number generator algorithms, and other features that are useful in the development of AI modules.
+
 #### todo
 
 ### Pandas.c
@@ -62,4 +64,3 @@ Pandas is a module that contains some useful functions for data manipulation and
 ### NLP.c
 #### todo
 
-$$ \sigma(x) = \frac{1}{1 + e^{-x}} $$
