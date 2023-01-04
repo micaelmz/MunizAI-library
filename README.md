@@ -34,7 +34,7 @@ Output in cmd:
 ```cmd
 len_lines: 768, len_column: 9
 len_lines: 768, len_column: 8
-Epoch: 999 - result deviation: -0.8750 - media: 0.8171
+Epoch: 999 - result deviation: -0.8750 - average: 0.8171
 Final weights:
 [0: 642079364251079370447859426311152519692572361916656279210498235414430060875984315686578569038790656.0000 ]
 [1: 77083697666112455876630953934879190545269180558078475637623342763127658152134431692687322255684796416.0000 ]
@@ -61,3 +61,5 @@ Pandas is a module that contains some useful functions for data manipulation and
 
 ### NLP.c
 #### todo
+
+$$ \sigma(x) = \frac{1}{1 + e^{-x}} $$

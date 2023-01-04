@@ -4,8 +4,8 @@
 
 #define EULER 2.71828
 
-// Calcula potência de um número (base ^ expoente).
-// Entradas: x = base, y = expoente.
+// Calculates the power of a number (base ^ exponent).
+// Inputs: x = base, y = exponent.
 float pow(float x, int y) {
     float result = 1;
     for (int i = 0; i < y; i++) {
@@ -14,8 +14,8 @@ float pow(float x, int y) {
     return result;
 }
 
-// Gera um número inteiro aleatório entre um intervalo. Detalhe: esse gerador é péssimo, mas é o que da pra fazer em C!
-// Entradas: min = número mínimo, max = número máximo.
+// Generates a random integer within a specified range.
+// Inputs: min = minimum number, max = maximum number.
 int rand_int(int min, int max) {
     srand(clock());
     LARGE_INTEGER performance_counter;
@@ -24,8 +24,8 @@ int rand_int(int min, int max) {
     return rand() % (max - min + 1) + min;
 }
 
-// Calcula a média ponderada de um vetor, caso nào seja passado os pesos (W = NULL), se torna uma função de média aritimetica.
-// Entradas: n = vetor dos valores, w = vetor dos pesos, size = tamanho.
+// Calculates the weighted mean of a vector. If weights are not provided, it calculates the arithmetic mean.
+// Inputs: n = vector of values, w = vector of weights, size = size of the vectors.
 float weighted_mean(float *n, float *w, int size) {
     float sum = 0;
     float w_sum = 0;
@@ -41,8 +41,8 @@ float weighted_mean(float *n, float *w, int size) {
     return sum / w_sum;
 }
 
-// Calcular a função de ativação ReLU (Rectified Linear Unit) de um vetor. Se o valor for menor que 0, retorna 0, caso contrário, retorna o valor.
-// Entrada: x = x da função.
+// Calculates the Rectified Linear Unit activation function for a given value. If the value is less than 0, it returns 0, otherwise it returns the value.
+// Input: x = function x.
 float relu(float x) {
     if (x < 0) {
         return 0;
@@ -50,14 +50,14 @@ float relu(float x) {
     return x;
 }
 
-// Calcula a função de ativação sigmoidal, que é uma função logística matemática, que retorna um valor entre 0 e 1. Definida por sigmoid(x) = 1 / (1 + exp(-x))
-// Entrada: x = x da função.
+// Calculates the sigmoidal activation function, which is a mathematical logistic function that returns a value between 0 and 1. Defined by sigmoid(x) = 1 / (1 + exp(-x))
+// Input: x = function x.
 float sigmoid(float x) {
     return 1 / (1 + pow(EULER, -x));
 }
 
-// Divide o dataset entre treino e teste.
-// Entradas; dataset = matriz do dataset, len_lines = quantidade de linhas, proportion = proporção de treino, train = matriz de treino, test = matriz de teste, len_test = quantidade de linhas do teste.
+// Divides a dataset into training and test sets.
+// Inputs: dataset = matrix of the dataset, len_lines = number of lines, proportion = proportion of training, train = matrix of training, test = matrix of test, len_test = number of lines of the test.
 void train_test(double **dataset, int len_lines, int proportion, double **train, double **test, int *len_train, int *len_test) {
     *len_train = len_lines * proportion / 100;
     *len_test = len_lines - *len_train;
@@ -70,16 +70,16 @@ void train_test(double **dataset, int len_lines, int proportion, double **train,
     }
 }
 
-// Ajusta os pesos através de um algortimo de retropropagação. Definido por Δw = αlpha × erro × entrada, onde o erro é definido por erro = (desejado - obtido).
-// Entradas: weights = vetor dos pesos, error = diferença entre o desejado e o obtido, relu_neurons = vetor dos neurônios preenchidos com as entradas, size = tamanho, alpha = taxa de aprendizado.
+// Ajusts the weights using the backpropagation algorithm.. Defined by Δw = αlpha × error × input, where alpha is the learning rate and error is the difference between the expected output and the actual output.
+// Inputs: weights = vector of weights, error = difference between the desired value and the obtained value, relu_neurons = vector of neurons filled with inputs, size = size, alpha = learning rate.
 void backpropagation(float *weights, float error, float *relu_neurons, int size, float alpha) {
     for (int i = 0; i < size; i++) {
         weights[i] = weights[i] + alpha * error * relu_neurons[i];
     }
 }
 
-// TODO - ALGORITMOS DE OVERLIFITING - AINDA NÃO IMPLEMENTADOS
+// TODO - OVERFITTING ALGORITHMS - NOT YET IMPLEMENTED
 
-// TODO - ALGORTIMOS DE OTIMIZAÇÃO COMO GRADIENTE DESCENDENTE E ADAM - AINDA NÃO IMPLEMENTADOS
+// TODO - OPTIMIZATION ALGORITHMS SUCH AS GRADIENT DESCENT AND ADAM - NOT YET IMPLEMENTED
 
-// TODO - RANDOM UTILIZANDO RUIDOS DO SISTEMA - AINDA NÃO IMPLEMENTADOS
+// TODO - RANDOM USING SYSTEM NOISE - NOT YET IMPLEMENTED

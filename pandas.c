@@ -150,3 +150,5 @@ double *copy_column(double **csv, int len_lines, int len_column, int column) {
     }
     return new_column;
 }
+
+// TODO - HEAD - Retorna as primeiras n linhas da matriz do csv

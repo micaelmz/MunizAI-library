@@ -4,46 +4,47 @@
 #include <time.h>
 #include "toolkit.c"
 
-// Estrutura do Perceptron, um algoritmo de aprendizado de máquina supervisionado, utilizado para classificação binária.
+// Perceptron's Structure, a supervised machine learning algorithm used for binary classification.
 typedef struct {
     float alpha;
     float *relu_neurons;
     double *weights;
 }Perceptron;
 
-// Treina o perceptron, realizando a função de ativação, e comparando o resultado obtido com o desejado, então ajusta os pesos através da função de retropropagação.
-// Entradas: perceptron = estrutura do perceptron, alpha = taxa de aprendizado (valor entre 0 e 1), epochs = quantidade de épocas, batch_size = tamanho do lote de amostras, dataset = matriz do dataset, result = vetor dos resultados desejados, size = quantidade de colunas, rows = quantidade de linhas.
+// Trains the perceptron, performing the activation function and comparing the obtained result with the desired result, then adjusts the weights through the backpropagation function.
+// Inputs: perceptron = structure of the perceptron, alpha = learning rate (value between 0 and 1), epochs = number of epochs, batch_size = size of the sample batch, dataset = matrix of the dataset, result = vector of desired results, size = number of columns, rows = number of rows.
 void fit(Perceptron *perceptron, float alpha, int epochs, int batch_size, float **dataset, int *result, int size, int rows) {
-    // TODO - IMPLEMENTAR O BIAS
+    // TODO - BIAS IMPLEMENTATION
     int hits, steps = 0;
 
     time_t start_time = time(NULL);
 
-    // Aloca os pesos do tamanho da quantidade de neuronios.
+    // Alocates the weights of the size of the number of neurons.
     int relu_neurons_units = size-1;
     perceptron->weights = malloc(relu_neurons_units * sizeof(float));
 
-    // Inicializa os pesos com valores aleatórios.
+    // Inicializes the weights with random values.
     for (int i = 0; i < relu_neurons_units; i++) {
         perceptron->weights[i] = rand_int(-100, 100) / 100.0;
     }
 
-    // Aloca os neurônios com o tamanho da quantidade de colunas (1 ReLU neuron para cada input)
+    // Alocates the neurons with the size of the number of columns (1 ReLU neuron for each input)
     perceptron->relu_neurons = malloc(relu_neurons_units * sizeof(float));
     perceptron->alpha = alpha;
 
-    // Realiza o treinamento.
+    // Starts the training.
+    // For each epoch, it performs the activation function and adjusts the weights.
     for (int epoch = 0; epoch < epochs; epoch++) {
-        // Aloca o vetor dos erros.
+        // Alocates the error vector (result deviation).
         double batch_errors[batch_size];
         for (int i = 0; i < batch_size; i++) {
 
-            // Gera um vetor de números "aleatórios", sem repetição (teoricamente).
+            // Generate a vector of "random" numbers, without repetition (theoretically).
             int rand_nums[batch_size];
             for (int j = 0; j < batch_size; j++) {
                 rand_nums[j] = rand_int(0, rows - 1);
             }
-            // Aloca as amostras do lote, de acordo com os números "aleatórios" gerados.
+            // Allocates the batch samples according to the generated "random" numbers.
             float sample_data[batch_size][relu_neurons_units];
             int sample_result[batch_size];
             for (int j = 0; j < batch_size; j++) {
@@ -52,7 +53,7 @@ void fit(Perceptron *perceptron, float alpha, int epochs, int batch_size, float 
                 }
                 sample_result[j] = result[rand_nums[j]];
             }
-            // Para cada neuronio ReLU, realiza a função de ativação e calcula o erro através do resultado obtido e o desejado, normalizado pelo neurônio sigmoidal.
+            // For each ReLU neuron, performs the activation function and calculates the error through the obtained result and the desired result, normalized by the sigmoidal neuron.
             float error = 0;
             for (int j = 0; j < relu_neurons_units; j++) {
                 perceptron->relu_neurons[j] = relu(sample_data[i][j]);
@@ -61,36 +62,36 @@ void fit(Perceptron *perceptron, float alpha, int epochs, int batch_size, float 
                     hits++;
                 }
                 steps++;
-                // Ajusta os pesos, através da função de retropropagação.
+                // Adjusts the weights through the backpropagation function.
                 backpropagation(perceptron->weights, error, perceptron->relu_neurons, relu_neurons_units, perceptron->alpha);
             }
-            // Armazena a diferença entre o desejado e o obtido no vetor, para cada uma das amostras do lote.
+            // Stores the difference between the desired value and the obtained value in the vector, for each of the samples in the batch.
             batch_errors[i] = error;
         }
-        // Calcula a média dos erros do lote.
+        // Calculates the mean of the errors in the batch.
         float mean_error = weighted_mean(batch_errors, NULL, batch_size);
 
-        // TODO - AVISO - remova esse print para obter uma melhor performance no treinamento, torna cerca de 20x mais rápido.
-        printf("\rEpoch: %d - distancia do resultado: %.4f - media: %.4f", epoch, mean_error, (float)hits / (float)steps);
+        // TODO - WARNING - remove this print for better performance during training, makes it about 20x faster.
+        printf("\rEpoch: %d - result deviation: %.4f - average: %.4f", epoch, mean_error, (float)hits / (float)steps);
     }
-    // Exibe os resultados obtidos com o treinamento. Detalhe, isso não é ainda uma métrica de avaliação (feito na função predict), apenas um indicativo de que o treinamento está ocorrendo.
-    printf("\nPesos finais: \n");
+    // Displays the results obtained with the training. Note, this is not yet an evaluation metric (done in the predict function), just an indication that the training is occurring.
+    printf("\nFinal weights: \n");
     for (int i = 0; i < relu_neurons_units; i++) {
         printf("[%i: %.4f ]", i, perceptron->weights[i]);
         printf("\n");
     }
-    printf("\n\n\n\tO treinamento terminou. Esses sao os resultados:");
-    printf("\n\tTempo de execucao: %d segundos", (int)(time(NULL) - start_time));
+    printf("\n\n\n\tTraining has finished. These are the results:");
+    printf("\n\tExecution time: %d seconds", (int)(time(NULL) - start_time));
     printf("\n\tEpochs: %d - Batch_size: %d - Alpha: %f", epochs, batch_size, alpha);
-    printf("\n\t\t Neuronios ReLU: %d + 1 Neuronio Sigmoid", relu_neurons_units);
+    printf("\n\t\t ReLU neurons: %d + 1 Sigmoid neuron", relu_neurons_units);
 }
 
-// Realiza a predição, através do dataset de testes, utilizando os pesos do perceptron treinado, e retorna a acurácia.
-// Entradas: perceptron = estrutura do perceptron, dataset = matriz do dataset, result = vetor dos resultados desejados, size = quantidade de colunas, rows = quantidade de linhas.
+// Makes the prediction, using the test dataset and the trained perceptron weights, and returns the accuracy.
+// Inputs: perceptron = structure of the perceptron, dataset = matrix of the dataset, result = vector of desired results, size = number of columns, rows = number of rows.
 void predict(Perceptron *p, double **dataset, float *result, int size, int rows) {
     int hits, wrong = 0;
 
-    // Realiza as mesmas funções de ativação e cálculo de erro, porém, sem ajustar os pesos, invés disso, apenas calcula a media de erros e acertos (acurácia).
+    // Performs the same activation functions and error calculation, but without adjusting the weights, instead just calculates the mean of errors and correct answers (accuracy).
     for (int i = 0; i < rows; i++) {
         float relu_neurons[size];
         for (int j = 0; j < size; j++) {
@@ -103,7 +104,7 @@ void predict(Perceptron *p, double **dataset, float *result, int size, int rows)
             wrong++;
         }
     }
-    printf("\n\tPredicao com a amostra de testes:");
-    printf("\n\tAcertos: %d - Erros: %d - Acuracia: %.2f%%\n", hits, wrong, (float)hits / (float)(hits + wrong) * 100);
+    printf("\n\tPrediction with the test sample:");
+    printf("\n\tCorrect: %d - Incorrect: %d - Accuracy: %.2f%%\n", hits, wrong, (float)hits / (float)(hits + wrong) * 100);
 }
 
