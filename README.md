@@ -15,7 +15,7 @@ I created this library to help me improve my undesting in AI fields, such as<br>
 
 This means that I am building this project while learning about it.
 <br>
-Making it in C instead of Python helps me to understand how things work behind the scenes. I hope you can learn something here with me 😉.
+Making it in C instead of Python helps me to understand how things work behind the scenes. I hope you can learn something here with me. 😉
 
 ## Modules
 ### Perceptron.c
