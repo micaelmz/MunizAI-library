@@ -32,22 +32,33 @@ predict(&p, test_data, test_result, copy_len_column, copy_len_test);
 ```
 Output in cmd:
 ```cmd
-len_lines: 768, len_column: 9
-len_lines: 768, len_column: 8
-Epoch: 999 - result deviation: -0.8750 - average: 0.8171
+0      6  148   72   35    0  33.60  0.63   50    1
+1      1   85   66   29    0  26.60  0.35   31    0
+2      8  183   64    0    0  23.30  0.67   32    1
+3      1   89   66   23   94  28.10  0.17   21    0
+4      0  137   40   35  168  43.10  2.29   33    1
+...  ...  ...  ...  ...  ...    ...   ...  ...
+763   10  101   76   48  180  32.90  0.17   63    0
+764    2  122   70   27    0  36.80  0.34   27    0
+765    5  121   72   23  112  26.20  0.24   30    0
+766    1  126   60    0    0  30.10  0.35   47    1
+767    1   93   70   31    0  30.40  0.32   23    0
+
+[768 rows x 9 columns]
+Epoch: 999 - result deviation: 2.5933 - average: 0.80927
 Final weights:
-[0: 642079364251079370447859426311152519692572361916656279210498235414430060875984315686578569038790656.0000 ]
-[1: 77083697666112455876630953934879190545269180558078475637623342763127658152134431692687322255684796416.0000 ]
-[2: 32178026611381223930825425980962017217847208223517684462505621691783168453339244560654189588289421312.0000 ]
-[3: 0.2200 ]
-[4: 0.2500 ]
-[5: 0.2800 ]
-[6: 0.3200 ]
+[0:     inf ]
+[1:     inf ]
+[2:     inf ]
+[3:   0.800 ]
+[4:   0.800 ]
+[5:   0.830 ]
+[6:   0.860 ]
 
         Training has finished. These are the results:
-        Execution time: 3 seconds
-        Epochs: 1000 - Batch size: 16 - Alpha: 0.100000
-                ReLU neurons: 7 + 1 Sigmoid neuron
+        Execution time: 11 seconds
+        Epochs: 1000 - Batch_size: 16 - Alpha: 0.100000
+                 ReLU neurons: 7 + 1 Sigmoid neuron
         Prediction with the test sample:
         Correct: 130 - Incorrect: 24 - Accuracy: 84.42%
 ```
