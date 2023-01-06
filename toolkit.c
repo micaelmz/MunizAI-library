@@ -25,17 +25,17 @@ int rand_int(int min, int max) {
 }
 
 // Calculates the weighted mean of a vector. If weights are not provided, it calculates the arithmetic mean.
-// Inputs: n = vector of values, w = vector of weights, size = size of the vectors.
-float weighted_mean(float *n, float *w, int size) {
+// Inputs: values = vector of values, weights = vector of weights, size = size of the vectors.
+float weighted_mean(float *values, float *weights, int size) {
     float sum = 0;
     float w_sum = 0;
     for (int i = 0; i < size; i++) {
-        if (w == NULL){
-            sum = sum + n[i];
+        if (weights == NULL){
+            sum = sum + values[i];
             w_sum = w_sum + 1;
         } else {
-            sum = sum + n[i] * w[i];
-            w_sum = w_sum + w[i];
+            sum = sum + values[i] * weights[i];
+            w_sum = w_sum + weights[i];
         }
     }
     return sum / w_sum;
@@ -70,11 +70,11 @@ void train_test(double **dataset, int len_lines, int proportion, double **train,
     }
 }
 
-// Ajusts the weights using the backpropagation algorithm.. Defined by Δw = αlpha × error × input, where alpha is the learning rate and error is the difference between the expected output and the actual output.
-// Inputs: weights = vector of weights, error = difference between the desired value and the obtained value, relu_neurons = vector of neurons filled with inputs, size = size, alpha = learning rate.
-void backpropagation(float *weights, float error, float *relu_neurons, int size, float alpha) {
-    for (int i = 0; i < size; i++) {
-        weights[i] = weights[i] + alpha * error * relu_neurons[i];
+// Ajusts the weights using the backpropagation algorithm. Defined by Δw = αlpha × loss × input, where alpha is the learning rate and loss is the difference between the expected output and the actual output.
+// Inputs: weights = vector of weights, loss = difference between the desired value and the obtained value, relu_layer = vector of neurons filled with inputs, len_relu_layer = len_relu_layer, alpha = learning rate.
+void backpropagation(float *weights, float loss, float *relu_layer, int len_relu_layer, float alpha) {
+    for (int i = 0; i < len_relu_layer; i++) {
+        weights[i] = weights[i] + alpha * loss * relu_layer[i];
     }
 }
 

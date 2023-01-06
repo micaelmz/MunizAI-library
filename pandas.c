@@ -170,7 +170,7 @@ void print_csv(double **csv, int len_lines, int len_column) {
 
 // Embaralha as linhas da matriz do csv
 // Entradas: csv = matriz com os dados do arquivo csv, len_lines = numero de linhas da matriz, len_column = numero de colunas da matriz
-void shuffle(double **matrix, int len_lines, int len_column) {
+void shuffle(double **csv, int len_lines, int len_column) {
     int *index = malloc(len_lines * sizeof(int));
     for (int i = 0; i < len_lines; i++) {
         index[i] = i;
@@ -187,9 +187,9 @@ void shuffle(double **matrix, int len_lines, int len_column) {
     // Percorre o vetor de índices embaralhados e embaralha a matriz diretamente no ponteiro
     for (int i = 0; i < len_lines; i++) {
         for (int j = 0; j < len_column; j++) {
-            double temp = matrix[i][j];
-            matrix[i][j] = matrix[index[i]][j];
-            matrix[index[i]][j] = temp;
+            double temp = csv[i][j];
+            csv[i][j] = csv[index[i]][j];
+            csv[index[i]][j] = temp;
         }
     }
 
