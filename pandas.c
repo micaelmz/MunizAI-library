@@ -64,6 +64,8 @@ double **read_csv(const char *filename, int *len_lines, int *len_column) {
     }
     fclose(fp);
 
+    // TODO - quebrar se tiver muitas colunas também (mais de 10)
+
     // ------ PRE SETTINGS FOR THE PRINTS ------
     int limiter = 0; int index_space = 1;
     int columns_space[*len_column];
