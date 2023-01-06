@@ -15,7 +15,7 @@ I created this library to help me improve my undesting in AI fields, such as<br>
 
 This means that I am building this project while learning about it.
 <br>
-Making it in C instead of Python helps me to understand how things work behind the scenes. I hope you can learn something here with me 😉.
+Making it in C instead of Python helps me to understand how things work behind the scenes. I hope you can learn something here with me. 😉
 
 ## Modules
 ### Perceptron.c
@@ -51,7 +51,7 @@ Final weights:
         Prediction with the test sample:
         Correct: 130 - Incorrect: 24 - Accuracy: 84.42%
 ```
-<i>You can find this example in main.c</i>
+<i>You can find this example in `main.c`</i>
 
 ### ToolKit.c
 The ToolKit module contains a set of utility functions that are commonly used in the development of neural networks. These functions include activation functions such as the sigmoid function $\sigma(x) = \frac{1}{1 + e^{-x}}$; mathematical constants; the backpropagation function $\Delta w = \alpha \times (expected - obtained) \times input$; random number generator algorithms, and other features that are useful in the development of AI modules.
@@ -60,4 +60,4 @@ The ToolKit module contains a set of utility functions that are commonly used in
 Pandas is a module that contains some useful functions for data manipulation and visualization. It is based on the Python Pandas library, but with some evident differences.<br>
 
 ### NLP.c
-#### in development
+> in development
