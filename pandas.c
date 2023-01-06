@@ -15,13 +15,116 @@ int is_float(float num){
     }
 }
 
-// Lê um arquivo .csv e retorna uma matriz com os dados float..
+// Prints a message error and exits the program.
+// Input: message = message that will be printed.
+void message_error(char message[]) {
+    fprintf(stderr, "\n%s", message);
+    system("pause");
+    exit(1);
+}
+
+void calculate_columns_space(double **matrix, int len_lines, int len_column, int *columns_space){
+    for (int i = 0; i < len_lines; i++){
+        for (int j = 0; j < len_column; j++){
+            int num = matrix[i][j];
+            int space = 1;
+            while (num > 10) {
+                num /= 10;
+                space = space + 1;
+            }
+            if (space > columns_space[j])
+                columns_space[j] = space;
+        }
+    }
+}
+
+void print_matrix(double **matrix, int len_lines, int len_column, int limiter){
+    // define o espaço do índice
+    int index_space = 1;
+    int num = len_lines;
+    while (num > 10) {
+        num /= 10;
+        index_space = index_space + 1;
+    }
+
+    int is_float_column[len_column];
+    for (int i = 0; i < len_column; i++){
+        is_float_column[i] = 0;
+    }
+
+    int is_at_least_two_digits_column[len_column];
+    for (int i = 0; i < len_column; i++){
+        is_at_least_two_digits_column[i] = 0;
+    }
+
+    // define o espaço das colunas
+    // TODO - BUG: o limiter ta como 3 e não ta printando do mesmo jeito que tava printando antes com o limiter em 3, bugn nos pontinhos
+    int columns_space[len_column];
+    for (int i = 0; i < len_column; i++){
+        columns_space[i] = (limiter == 5) ? 3 : 2;
+    }
+
+    calculate_columns_space(matrix, len_lines, len_column, columns_space);
+    // define o limite
+    if (len_lines < 5)
+        limiter = len_lines;
+
+    // imprime a matriz
+    for (int i = 0; i < len_lines; i++) {
+        if (i < limiter || i >= len_lines - 5) {
+            printf("%-*d   ", index_space, i);
+
+            // TODO - PLEASE MAKE IT LESS UGLY, DENSE AND MORE READABLE WTF IS THIS
+            for (int j = 0; j < len_column; j++) {
+                if (is_float(matrix[i][j]) || is_float_column[j]) {
+                    is_float_column[j] = 1;
+                    if (is_at_least_two_digits_column[j] || matrix[i][j] >= 10) {
+                        is_at_least_two_digits_column[j] = 1;
+                        if (matrix[i][j] >= 10)
+                            printf("%*.2f  ", columns_space[j], matrix[i][j]);
+                        else
+                            printf("0%*.2f  ", columns_space[j], matrix[i][j]);
+                    }
+                    else
+                        printf("%*.2f  ", columns_space[j], matrix[i][j]);
+                } else {
+                    printf("%*.0f  ", columns_space[j], matrix[i][j]);
+                }
+            }
+
+
+            printf("\n");
+        }
+        else if (i == limiter) {
+            for (int j = 0; j < len_column; j++) {
+                if (is_float(matrix[i][j]) || is_float_column[j]) {
+                    // TODO - This if isnt 100% right, because it's only checking the first number after the limiter, should check all the numbers after the limiter.
+                    if (matrix[i][j] >= 10)
+                        printf("%-*s  ", columns_space[j] + 2, "...");
+                    else
+                        printf("%-*s  ", columns_space[j] + 1, "...");
+                } else {
+                    printf("%*s  ", columns_space[j], "...");
+                }
+            }
+            printf("\n");
+        }
+    }
+}
+
+//
+void head(double **matrix, int len_column, int num_lines) {
+    print_matrix(matrix, num_lines, len_column, num_lines);
+}
+
+// Reads a CSV file and returns a matrix with the data in double format. (It doesn't work with strings).
 // Entradas: filename = nome do arquivo .csv, len_lines = ponteiro para a variavel que armazenará o numero de linhas do arquivo, len_column = ponteiro para a variavel que armazenará o numero de colunas do arquivo.
 double **read_csv(const char *filename, int *len_lines, int *len_column) {
+    // TODO - Type number or string
+
     FILE *fp = fopen(filename, "r");
     if (fp == NULL) {
-        printf("Error while opening the file %s\n", filename);
-        exit(1);
+        message_error("Error while opening the file.\n");
     }
 
     double **matrix = NULL;
@@ -64,93 +167,20 @@ double **read_csv(const char *filename, int *len_lines, int *len_column) {
     }
     fclose(fp);
 
+    print_matrix(matrix, *len_lines, *len_column, 5);
     // TODO - quebrar se tiver muitas colunas também (mais de 10)
 
-    // ------ PRE SETTINGS FOR THE PRINTS ------
-    int limiter = 0; int index_space = 1;
-    int columns_space[*len_column];
-
-    for (int i = 0; i < *len_column; i++){
-        columns_space[i] = 3;
-    }
-
-    // define the limiter
-    if (*len_lines < 5)
-        limiter = *len_lines;
-    else
-        limiter = 5;
-
-    // define the index limiter
-    int num = *len_lines;
-    while (num > 10) {
-        num /= 10;
-        index_space = index_space + 1;
-    }
-
-    // define the columns limiter
-    for (int i = 0; i < *len_lines; i++){
-        for (int j = 0; j < *len_column; j++){
-            num = matrix[i][j];
-            int space = 1;
-            while (num > 10) {
-                num /= 10;
-                space = space + 1;
-            }
-            if (space > columns_space[j])
-                columns_space[j] = space;
-        }
-    }
-
-    // ------ PRINTS ------
-    for (int i = 0; i < limiter; i++) {
-        printf("%-*d  ", index_space, i);
-        for (int j = 0; j < *len_column; j++) {
-            if (is_float(matrix[i][j])){
-                printf("%*.2f  ", columns_space[j], matrix[i][j]);
-            }
-            else{
-                printf("%*.0f  ", columns_space[j], matrix[i][j]);
-            }
-        }
-        printf("\n");
-    }
-
-    for (int i = 0; i < *len_column; i++){
-        if (is_float(matrix[limiter][i])){
-            // TODO - This if isnt 100% right, because it's only checking the first number after the limiter, should check all the numbers after the limiter.
-            if (matrix[limiter][i] >= 10)
-                printf("%-*s  ", columns_space[i]+2, "...");
-            else
-                printf("%-*s  ", columns_space[i]+1, "...");
-        }
-        else{
-            printf("%*s  ", columns_space[i], "...");
-        }
-    }
-
-    printf("\n");
-
-    for (int i = *len_lines - 5; i < *len_lines; i++) {
-        printf("%-*d  ", index_space, i);
-        for (int j = 0; j < *len_column; j++) {
-            if (is_float(matrix[i][j])){
-                printf("%*.2f  ", columns_space[j], matrix[i][j]);
-            }
-            else{
-                printf("%*.0f  ", columns_space[j], matrix[i][j]);
-            }
-        }
-        printf("\n");
-    }
     printf("\n[%d rows x %d columns]\n", *len_lines, *len_column);
-    return matrix;
 
-    // TODO - refactor this function, it's too big, it's possible to separate the prints in another function. (will be userfull to for the other functions)
+    return matrix;
 }
 
 // Imprime a matriz do csv em um formato semelhante ao pandas
 // Entradas: csv = matriz com os dados do arquivo csv, len_lines = numero de linhas da matriz, len_column = numero de colunas da matriz
 void print_csv(double **csv, int len_lines, int len_column) {
+    if (!csv)
+        message_error("Error while printing the csv.\n");
+
     int i = 0;
     if (len_column == 1) {
         for (i = 0; i < len_lines; i++) {
@@ -171,6 +201,9 @@ void print_csv(double **csv, int len_lines, int len_column) {
 // Embaralha as linhas da matriz do csv
 // Entradas: csv = matriz com os dados do arquivo csv, len_lines = numero de linhas da matriz, len_column = numero de colunas da matriz
 void shuffle(double **csv, int len_lines, int len_column) {
+    if (!csv)
+        message_error("Error while shuffling the csv.\n");
+
     int *index = malloc(len_lines * sizeof(int));
     for (int i = 0; i < len_lines; i++) {
         index[i] = i;
@@ -199,9 +232,10 @@ void shuffle(double **csv, int len_lines, int len_column) {
 // Remove uma coluna da matriz do csv
 // Entradas csv = matriz com os dados do arquivo csv, len_lines = numero de linhas da matriz, len_column = numero de colunas da matriz, column = coluna a ser removida
 double **remove_column(double **csv, int *len_lines, int *len_column, int column) {
+    if (!csv)
+        message_error("Error while removing the column.\n");
     if (column >= *len_column) {
-        printf("Error: column %d is out of range\n", column);
-        exit(1);
+        message_error("Error while removing the column, the column number is bigger than the number of columns.\n");
     }
 
     if (column < 0){
@@ -228,10 +262,12 @@ double **remove_column(double **csv, int *len_lines, int *len_column, int column
 // Copia uma coluna da matriz do csv
 // Entradas csv = matriz com os dados do arquivo csv, len_lines = numero de linhas da matriz, len_column = numero de colunas da matriz, column = coluna a ser copiada
 double *copy_column(double **csv, int len_lines, int len_column, int column) {
+    if (!csv)
+        message_error("Error while copying the column.\n");
     if (column >= len_column) {
-        printf("Error: column %d is out of range\n", column);
-        exit(1);
+        message_error("Error while copying the column, the column number is bigger than the number of columns.\n");
     }
+
     if (column < 0){
         column = len_column + column;
     }
@@ -241,5 +277,3 @@ double *copy_column(double **csv, int len_lines, int len_column, int column) {
     }
     return new_column;
 }
-
-// TODO - HEAD the head function of pandas

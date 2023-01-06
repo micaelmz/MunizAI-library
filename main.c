@@ -106,6 +106,9 @@ int main() {
     // Testa a rede neural com o dataset de teste
     predict(&p, test_data, test_result, copy_len_column, copy_len_test);
     */
+    double **csv = read_csv("dataset-examples/diabetes.csv", &len_lines, &len_column);
+
+    head(csv, len_column, 50);
 
     printf("\n");
     system("pause");
