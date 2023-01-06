@@ -142,6 +142,8 @@ double **read_csv(const char *filename, int *len_lines, int *len_column) {
     }
     printf("\n[%d rows x %d columns]\n", *len_lines, *len_column);
     return matrix;
+
+    // TODO - refactor this function, it's too big, it's possible to separate the prints in another function. (will be userfull to for the other functions)
 }
 
 // Imprime a matriz do csv em um formato semelhante ao pandas
@@ -238,4 +240,4 @@ double *copy_column(double **csv, int len_lines, int len_column, int column) {
     return new_column;
 }
 
-// TODO - HEAD - Retorna as primeiras n linhas da matriz do csv
+    // TODO - HEAD the head function of pandas

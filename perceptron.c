@@ -108,4 +108,3 @@ void predict(Perceptron *p, double **dataset, float *result, int size, int rows)
     printf("\n\tPrediction with the test sample:");
     printf("\n\tCorrect: %d - Incorrect: %d - Accuracy: %.2f%%\n", hits, wrong, (float)hits / (float)(hits + wrong) * 100);
 }
-
