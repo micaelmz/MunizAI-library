@@ -78,6 +78,7 @@ void backpropagation(float *weights, float error, float *relu_neurons, int size,
     }
 }
 
+
 // TODO - OVERFITTING ALGORITHMS - NOT YET IMPLEMENTED
 
 // TODO - OPTIMIZATION ALGORITHMS SUCH AS GRADIENT DESCENT AND ADAM - NOT YET IMPLEMENTED

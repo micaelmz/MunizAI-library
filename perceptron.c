@@ -72,15 +72,16 @@ void fit(Perceptron *perceptron, float alpha, int epochs, int batch_size, float 
         float mean_error = weighted_mean(batch_errors, NULL, batch_size);
 
         // TODO - WARNING - remove this print for better performance during training, makes it about 20x faster.
+        // TODO - result deviation = loss
         printf("\rEpoch: %d - result deviation: %.4f - average: %.4f", epoch, mean_error, (float)hits / (float)steps);
     }
     // Displays the results obtained with the training. Note, this is not yet an evaluation metric (done in the predict function), just an indication that the training is occurring.
     printf("\nFinal weights: \n");
     for (int i = 0; i < relu_neurons_units; i++) {
-        printf("[%i: %.4f ]", i, perceptron->weights[i]);
+        printf("[%i: %7.3f ]", i, (float)perceptron->weights[i]);
         printf("\n");
     }
-    printf("\n\n\n\tTraining has finished. These are the results:");
+    printf("\n\tTraining has finished. These are the results:");
     printf("\n\tExecution time: %d seconds", (int)(time(NULL) - start_time));
     printf("\n\tEpochs: %d - Batch_size: %d - Alpha: %f", epochs, batch_size, alpha);
     printf("\n\t\t ReLU neurons: %d + 1 Sigmoid neuron", relu_neurons_units);

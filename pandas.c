@@ -5,6 +5,16 @@
 
 #define MAX_LINE 9999
 
+// Check if a float is an integer.
+// Input: num = number.
+int is_float(float num){
+    if (num == (int)num){
+        return 0;
+    }else{
+        return 1;
+    }
+}
+
 // Lê um arquivo .csv e retorna uma matriz com os dados float..
 // Entradas: filename = nome do arquivo .csv, len_lines = ponteiro para a variavel que armazenará o numero de linhas do arquivo, len_column = ponteiro para a variavel que armazenará o numero de colunas do arquivo.
 double **read_csv(const char *filename, int *len_lines, int *len_column) {
@@ -53,7 +63,84 @@ double **read_csv(const char *filename, int *len_lines, int *len_column) {
         matrix[*len_lines - 1] = realloc(matrix[*len_lines - 1], i * sizeof(double));
     }
     fclose(fp);
-    printf("len_lines: %d, len_column: %d\n", *len_lines, *len_column);
+
+    // ------ PRE SETTINGS FOR THE PRINTS ------
+    int limiter = 0; int index_space = 1;
+    int columns_space[*len_column];
+
+    for (int i = 0; i < *len_column; i++){
+        columns_space[i] = 3;
+    }
+
+    // define the limiter
+    if (*len_lines < 5)
+        limiter = *len_lines;
+    else
+        limiter = 5;
+
+    // define the index limiter
+    int num = *len_lines;
+    while (num > 10) {
+        num /= 10;
+        index_space = index_space + 1;
+    }
+
+    // define the columns limiter
+    for (int i = 0; i < *len_lines; i++){
+        for (int j = 0; j < *len_column; j++){
+            num = matrix[i][j];
+            int space = 1;
+            while (num > 10) {
+                num /= 10;
+                space = space + 1;
+            }
+            if (space > columns_space[j])
+                columns_space[j] = space;
+        }
+    }
+
+    // ------ PRINTS ------
+    for (int i = 0; i < limiter; i++) {
+        printf("%-*d  ", index_space, i);
+        for (int j = 0; j < *len_column; j++) {
+            if (is_float(matrix[i][j])){
+                printf("%*.2f  ", columns_space[j], matrix[i][j]);
+            }
+            else{
+                printf("%*.0f  ", columns_space[j], matrix[i][j]);
+            }
+        }
+        printf("\n");
+    }
+
+    for (int i = 0; i < *len_column; i++){
+        if (is_float(matrix[limiter][i])){
+            // TODO - This if isnt 100% right, because it's only checking the first number after the limiter, should check all the numbers after the limiter.
+            if (matrix[limiter][i] >= 10)
+                printf("%-*s  ", columns_space[i]+2, "...");
+            else
+                printf("%-*s  ", columns_space[i]+1, "...");
+        }
+        else{
+            printf("%*s  ", columns_space[i], "...");
+        }
+    }
+
+    printf("\n");
+
+    for (int i = *len_lines - 5; i < *len_lines; i++) {
+        printf("%-*d  ", index_space, i);
+        for (int j = 0; j < *len_column; j++) {
+            if (is_float(matrix[i][j])){
+                printf("%*.2f  ", columns_space[j], matrix[i][j]);
+            }
+            else{
+                printf("%*.0f  ", columns_space[j], matrix[i][j]);
+            }
+        }
+        printf("\n");
+    }
+    printf("\n[%d rows x %d columns]\n", *len_lines, *len_column);
     return matrix;
 }
 
@@ -70,7 +157,7 @@ void print_csv(double **csv, int len_lines, int len_column) {
         for (int i = 0; i < len_lines; i++) {
             printf("%d| ", i);
             for (int j = 0; j < len_column; j++) {
-                printf("%f | ", csv[i][j]);
+                printf("%.2f| ", csv[i][j]);
             }
             printf("\n");
         }
@@ -130,7 +217,7 @@ double **remove_column(double **csv, int *len_lines, int *len_column, int column
     }
 
     *len_column -= 1;
-    printf("len_lines: %d, len_column: %d\n", *len_lines, *len_column);
+    //printf("len_lines: %d, len_column: %d\n", *len_lines, *len_column);
     return new_csv;
 }
 
