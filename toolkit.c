@@ -59,7 +59,7 @@ float sigmoid(float x) {
 
 // Divides a dataset into training and test sets.
 // Inputs: dataset = matrix of the dataset, len_lines = number of lines, proportion = proportion of training, train = matrix of training, test = matrix of test, len_test = number of lines of the test.
-void train_test(csv dataset, int len_lines, int proportion, csv train, csv test, int *len_train, int *len_test) {
+void train_test(matrix dataset, int len_lines, int proportion, matrix train, matrix test, int *len_train, int *len_test) {
     *len_train = len_lines * proportion / 100;
     *len_test = len_lines - *len_train;
 

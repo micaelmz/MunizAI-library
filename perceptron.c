@@ -13,7 +13,7 @@ typedef struct {
 
 // Trains the perceptron, performing the activation function and comparing the obtained result with the desired result, then adjusts the weights through the backpropagation function.
 // Inputs: perceptron = structure of the perceptron, alpha = learning rate (value between 0 and 1), epochs = number of epochs, batch_size = len_column of the sample batch, dataset = matrix of the dataset, result = vector of desired results, len_column = number of columns, len_lines = number of len_lines.
-void fit(Perceptron *perceptron, float alpha, int epochs, int batch_size, float **dataset, int *result, int len_column, int len_lines) {
+void fit(Perceptron *perceptron, float alpha, int epochs, int batch_size, matrix dataset, int *result, int len_column, int len_lines) {
     // TODO - BIAS IMPLEMENTATION
     int hits, steps = 0;
 
@@ -88,7 +88,7 @@ void fit(Perceptron *perceptron, float alpha, int epochs, int batch_size, float 
 
 // Makes the prediction, using the test dataset and the trained perceptron weights, and returns the accuracy.
 // Inputs: perceptron = structure of the perceptron, dataset = matrix of the dataset, result = vector of desired results, len_column = number of columns, len_lines = number of len_lines.
-void predict(Perceptron *p, double **dataset, float *result, int len_column, int len_lines) {
+void predict(Perceptron *p, matrix dataset, float *result, int len_column, int len_lines) {
     int hits, wrong = 0;
 
     // Performs the same activation functions and error calculation, but without adjusting the weights, instead just calculates the mean of errors and correct answers (accuracy).
