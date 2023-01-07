@@ -31,7 +31,7 @@ fit(&p, 0.1, 1000, 16, train_data, train_result, len_column, len_train);
 predict(&p, test_data, test_result, copy_len_column, copy_len_test);
 ```
 Output in cmd:
-```cmd
+```ms-dos
 0      6  148   72   35    0  33.60  0.63   50    1
 1      1   85   66   29    0  26.60  0.35   31    0
 2      8  183   64    0    0  23.30  0.67   32    1
@@ -74,7 +74,7 @@ Examples of functions that are available in this module are:<br>
 ```c
 dataframe csv = read_csv("dataset-examples/bankruptcy.csv", &len_lines, &len_column);
 ```
-```cmd
+```ms-dos
 0      6  148   72  35    0  33.60  0.63  50  1
 1      1   85   66  29    0  26.60  0.35  31  0
 2      8  183   64   0    0  23.30  0.67  32  1
@@ -91,7 +91,7 @@ dataframe csv = read_csv("dataset-examples/bankruptcy.csv", &len_lines, &len_col
 ```c
 head(csv, 7);
 ```
-```cmd
+```ms-dos
 0   6  148  72  35    0  33.60  0.63  50  1
 1   1   85  66  29    0  26.60  0.35  31  0
 2   8  183  64   0    0  23.30  0.67  32  1
