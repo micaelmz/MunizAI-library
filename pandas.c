@@ -59,8 +59,9 @@ void calculate_columns_space(dataframe df, int len_lines, int len_column, int *c
     }
 }
 
-void print_matrix(dataframe df, int len_lines, int len_column, int limiter){
+void print_matrix(dataframe df, int len_lines, int len_column, int limiter_lines){
     int index_space = 1;
+    int limiter_columns = 12;
 
     int num = len_lines;
     while (num > 10) {
@@ -68,7 +69,7 @@ void print_matrix(dataframe df, int len_lines, int len_column, int limiter){
         index_space = index_space + 1;
     }
 
-    // TODO - BUG: o limiter ta como 3 e não ta printando do mesmo jeito que tava printando antes com o limiter em 3, bugn nos pontinhos
+    // TODO - BUG: o limiter_lines ta como 3 e não ta printando do mesmo jeito que tava printando antes com o limiter_lines em 3, bugn nos pontinhos
     int is_float_column[len_column];
     int is_at_least_two_digits_column[len_column];
     int columns_space[len_column];
@@ -80,14 +81,20 @@ void print_matrix(dataframe df, int len_lines, int len_column, int limiter){
 
     // define o limite
     if (len_lines < 5)
-        limiter = len_lines;
+        limiter_lines = len_lines;
+    if (len_column < 10)
+        limiter_columns = len_column;
 
     // prints the matrix
     // TODO - instead of using a if for not print while loop, but loop even if isnt printing, just push the loop to the end of the matrix, making it faster
     for (int i = 0; i < len_lines; i++) {
-        if (i < limiter || i >= len_lines - 5) {
+        if (i < limiter_lines || i >= len_lines - 5) {
             printf("%-*d   ", index_space, i);
             for (int j = 0; j < len_column; j++) {
+                if (len_column > 10 && j == 10) {
+                    printf("...");
+                    break;
+                }
                 if (df[i][j] >= 10)
                     is_at_least_two_digits_column[j] = 1;
                 if (is_float(df[i][j]))
@@ -102,10 +109,10 @@ void print_matrix(dataframe df, int len_lines, int len_column, int limiter){
             }
             printf("\n");
         }
-        else if (i == limiter) {
-            for (int j = 0; j < len_column; j++) {
+        else if (i == limiter_lines) {
+            for (int j = 0; j < limiter_columns; j++) {
                 if (is_float(df[i][j]) || is_float_column[j]) {
-                    // TODO - This if isnt 100% right, because it's only checking the first number after the limiter, should check all the numbers after the limiter.
+                    // TODO - This if isnt 100% right, because it's only checking the first number after the limiter_lines, should check all the numbers after the limiter_lines.
                     if (df[i][j] >= 10)
                         printf("%-*s  ", columns_space[j] + 2, "...");
                     else

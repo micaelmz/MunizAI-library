@@ -69,6 +69,37 @@ The ToolKit module contains a set of utility functions that are commonly used in
 
 ### Pandas.c
 Pandas is a module that contains some useful functions for data manipulation and visualization. It is based on the Python Pandas library, but with some evident differences.<br>
+Examples of functions that are available in this module are:<br>
+- `read_csv()`: Reads a csv file and returns a DataFrame object.
+```c
+dataframe csv = read_csv("dataset-examples/bankruptcy.csv", &len_lines, &len_column);
+```
+```cmd
+0      6  148   72  35    0  33.60  0.63  50  1
+1      1   85   66  29    0  26.60  0.35  31  0
+2      8  183   64   0    0  23.30  0.67  32  1
+3      1   89   66  23   94  28.10  0.17  21  0
+4      0  137   40  35  168  43.10  2.29  33  1
+...  ...  ...  ...  ...  ...   ...  ...  ...
+763   10  101   76  48  180  32.90  0.17  63  0
+764    2  122   70  27    0  36.80  0.34  27  0
+765    5  121   72  23  112  26.20  0.24  30  0
+766    1  126   60   0    0  30.10  0.35  47  1
+767    1   93   70  31    0  30.40  0.32  23  0
+```
+- `head()`: Returns the first n rows of a DataFrame object.
+```c
+head(csv, 7);
+```
+```cmd
+0   6  148  72  35    0  33.60  0.63  50  1
+1   1   85  66  29    0  26.60  0.35  31  0
+2   8  183  64   0    0  23.30  0.67  32  1
+3   1   89  66  23   94  28.10  0.17  21  0
+4   0  137  40  35  168  43.10  2.29  33  1
+5   5  116  74   0    0  25.60  0.20  30  0
+6   3   78  50  32   88  31.00  0.25  26  1
+```
 
 ### NLP.c
 > in development

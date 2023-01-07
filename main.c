@@ -107,7 +107,7 @@ int main() {
     */
     dataframe csv = read_csv("dataset-examples/diabetes.csv", &len_lines, &len_column);
 
-    head(csv, len_column, 50);
+    head(csv, len_column, 7);
 
     printf("\n");
     system("pause");
