@@ -3,6 +3,7 @@
 #include "pandas.c"
 #include "perceptron.c"
 
+#define matrix double**
 
 int main() {
     // Variaveis que armazenam as dimensoes do arquivo csv
@@ -106,7 +107,7 @@ int main() {
     // Testa a rede neural com o dataset de teste
     predict(&p, test_data, test_result, copy_len_column, copy_len_test);
     */
-    double **csv = read_csv("dataset-examples/diabetes.csv", &len_lines, &len_column);
+    csv csv = read_csv("dataset-examples/diabetes.csv", &len_lines, &len_column);
 
     head(csv, len_column, 50);
 

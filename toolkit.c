@@ -3,6 +3,7 @@
 #include <time.h>
 
 #define EULER 2.71828
+#define matrix double**
 
 // Calculates the power of a number (base ^ exponent).
 // Inputs: x = base, y = exponent.
@@ -58,7 +59,7 @@ float sigmoid(float x) {
 
 // Divides a dataset into training and test sets.
 // Inputs: dataset = matrix of the dataset, len_lines = number of lines, proportion = proportion of training, train = matrix of training, test = matrix of test, len_test = number of lines of the test.
-void train_test(double **dataset, int len_lines, int proportion, double **train, double **test, int *len_train, int *len_test) {
+void train_test(csv dataset, int len_lines, int proportion, csv train, csv test, int *len_train, int *len_test) {
     *len_train = len_lines * proportion / 100;
     *len_test = len_lines - *len_train;
 
